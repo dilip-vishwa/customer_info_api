@@ -1,0 +1,8 @@
+# add codes as column name in csv, then run below command to add data in csv
+mongoimport -d brandx -c unique_codes --type csv --file 250_unique_codes.csv --headerline
+
+# run below command to take backup of data
+mongodump -d brandx -o /home/adming/mongodb_backup/
+
+# run below command to restore data
+mongorestore -d brandx -o /home/adming/mongodb_backup/brandx
