@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "7e7ee90b-b6fe-451a-94bf-2a4ba1b2cf9d",
+		"name": "BrandX API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Save Form Info",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "dilip",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "ddd@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "mobile_number",
+							"value": "9898989898",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "kandivali",
+							"type": "text"
+						},
+						{
+							"key": "unique_code",
+							"value": "2FaeBaiw",
+							"type": "text"
+						},
+						{
+							"key": "customer_pic",
+							"type": "file",
+							"src": "/home/adming/Downloads/Screenshot from 2020-09-17 09-32-17.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/save-info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"save-info"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
