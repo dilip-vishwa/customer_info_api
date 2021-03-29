@@ -12,8 +12,8 @@ config.mongo_db = {
 config.email_regexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 config.mobile_number = /\d{10,12}/
 
-let custom_config = require(`./${config.environment}`);
+// let custom_config = require(`./${config.environment}`);
 
-const final_config = {...config, ...custom_config}
-
+// const final_config = {...config, ...custom_config}
+const final_config = {...config}
 module.exports = final_config;

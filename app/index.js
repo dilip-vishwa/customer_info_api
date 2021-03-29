@@ -53,4 +53,33 @@ api.save_info = async (req, res) => {
     }
 };
 
+
+api.check_for_code = async (req, res) => {
+  let response = {}
+
+  try {
+      let data = req.body;
+
+      let fields = {'unique_code': "str"};
+      response = __validator.validate_all_fields(fields, data)
+      if (response["issue"]) {
+          throw new Error("Validation problem in given field value");
+      }
+
+      let unique_code_from_db = await __db.find('unique_codes', {codes: data.unique_code});
+      if(unique_code_from_db.length == 0) {
+        response["issue"] = "Code did not match"
+      } else {
+        if(unique_code_from_db[0].used_by) {
+          response["issue"] = "Code is already used"
+        }
+      }
+      
+      res.json(response)
+  } catch (e) {
+      __logger.error(e)
+      res.json(response)
+  }
+};
+
 module.exports = api;

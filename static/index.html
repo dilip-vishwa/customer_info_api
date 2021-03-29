@@ -1,5 +1,4 @@
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -104,15 +103,18 @@
 			outline: none;
 			color: #000;
 			width: 100%;
-			margin-bottom: 15px;
+			margin-bottom: 0px;
+			margin-top: 15px;
 			font-size: 1em;
 		}
 
 		input[type="file"] {
 			color: #fff;
+			width: 100%;
 		}
 
-		input[type="submit"] {
+		input[type="submit"],
+		#submit_form {
 			margin-top: 10px;
 			font-size: 1.5em;
 			float: right;
@@ -175,6 +177,20 @@
 				top: 300px;
 			}
 		}
+
+		.invalid {
+			color: #960606
+		}
+
+		.span_margin {
+			margin-top: 15px;
+			margin-bottom: 0px;
+		}
+
+		#thank_you_message {
+			text-align: center;
+			font-weight: bold;
+		}
 	</style>
 </head>
 
@@ -188,17 +204,19 @@
 			<div class="childdiv">
 				<div id="form">
 					<div style="background-color:#6785c0;">
-						<Span id="form-title">Please fill below form to verifiy to your purchase</span>
+						<Span id="form-title">Please fill below form to verify to your purchase</span>
 					</div>
 					<div id="form-content">
-						<form method="post" action="save-info" enctype="multipart/form-data">
-							<input type="text" placeholder="Name" name="name" />
-							<input type="email" placeholder="Email" name="email" />
-							<input type="text" placeholder="Mobile Number" name="mobile_number" />
-							<input type="text" placeholder="Address" name="address" />
-							<input type="text" placeholder="8 Digit Unique Code" name="unique_code" />
-							<span style="color:#fff;">Upload your pic: </span> <input type="file" placeholder="Upload your pic" name="customer_pic" />
-							<input type="Submit" />
+						<form id="signup_form">
+							<span id="data_issue" class="invalid"></span>
+							<input type="text" placeholder="Name" name="name" id="name" />
+							<input type="email" placeholder="Email" name="email" id="email" />
+							<input type="text" placeholder="Mobile Number" name="mobile_number" id="mobile_number" />
+							<input type="text" placeholder="Address" name="address" id="address" />
+							<input type="text" placeholder="8 Digit Unique Code" name="unique_code" id="unique_code" />
+							<p class="span_margin" style="color:#fff;">Upload your pic: </p> <input type="file"
+								placeholder="Upload your pic" name="customer_pic" id="customer_pic" /></br>
+							<button id="submit_form">Submit</button>
 						</form>
 					</div>
 				</div>
@@ -209,8 +227,92 @@
 		</div>
 		<div class="line" id="bottom-line"></div>
 	</div>
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
 	<script type="text/javascript">
-		
+		$(document).ready(function () {
+			$("#signup_form").validate({
+				errorClass: "invalid",
+				rules: {
+					name: {
+						required: true,
+						minlength: 2
+					},
+					email: {
+						required: true,
+						email: true
+					},
+					mobile_number: {
+						required: true,
+						minlength: 10,
+						maxlength: 12
+					},
+					address: {
+						required: true,
+						minlength: 5
+					},
+					unique_code: {
+						required: true,
+						minlength: 5
+					},
+					customer_pic: {
+						required: true,
+					},
+				},
+				messages: {
+					name: {
+						required: "Please enter your username",
+						minlength: "Your username must consist of at least 2 characters"
+					},
+					email: {
+						required: "Please enter your email",
+						minlength: "Your unique code must consist of at least 2 characters"
+					},
+					mobile_number: {
+						required: "Please enter your mobile number",
+						minlength: "Your mobile number must consist of at least 10 characters",
+						maxlength: "Your mobile number must not be larger than 12 characters"
+					},
+					address: {
+						required: "Please enter your address",
+						minlength: "Your address must consist of at least 5 characters"
+					},
+					unique_code: {
+						required: "Please enter a unique code",
+						minlength: "Your unique code must consist of at least 5 characters"
+					},
+					customer_pic: "Please upload your photo"
+				}
+			});
+			$('#signup_form').on('submit', function (e) {
+				e.preventDefault();
+				if (!$("#signup_form").valid()) {
+					return true;
+				}
+				var formData = new FormData();
+				formData.append('name', $('#name').val());
+				formData.append('email', $('#email').val());
+				formData.append('mobile_number', $('#mobile_number').val());
+				formData.append('address', $('#address').val());
+				formData.append('unique_code', $('#unique_code').val());
+				formData.append('customer_pic', $('#customer_pic')[0].files[0]);
+
+				$.ajax({
+					url: 'save-info',
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (data) {
+						if (data.issue) {
+							$('#data_issue').text(data.issue);
+						} else {
+							$('#form-content').html('<p class="thank_you_message">Thank you for registration</p>')
+						}
+					}
+				});
+			});
+		});
 	</script>
 </body>
 

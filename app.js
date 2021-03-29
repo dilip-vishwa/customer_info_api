@@ -23,5 +23,5 @@ app.listen(port, () => {
 
 __db.get_db().then(function (db) {
   __db.db = db
-  console.log("DB initialized")
+  console.log("DB initialized");
 })
